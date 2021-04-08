@@ -1,16 +1,10 @@
 tasks:
-  Default:
-    command:
-      - python
-      - -m
-      - robot
-      - --report
-      - NONE
-      - --outputdir
-      - output
-      - --logtitle
-      - Task log
-      - tasks.robot
+  Scan PDF Invoices with AWS Textract:
+    robotTaskName: Scan PDF Invoices with AWS Textract
+  Scan Image Invoices with AWS Textract:
+    robotTaskName: Scan Image Invoices with AWS Textract
+  Create Invoices:
+    robotTaskName: Create Invoices
 
 condaConfigFile: conda.yaml
 artifactsDir: output
@@ -18,5 +12,6 @@ PATH:
   - .
 PYTHONPATH:
   - .
+  - resources
 ignoreFiles:
   - .gitignore
