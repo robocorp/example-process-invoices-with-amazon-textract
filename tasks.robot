@@ -8,6 +8,7 @@ Process PDF invoices with Amazon Textract
     [Setup]    Initialize Amazon Clients
     @{job_ids}=    Create List
     ${pdf_files}=    Get Invoice Files    pdf
+    ${bucket_created}=    Create Bucket    ${S3_BUCKET_NAME}
     FOR    ${pdf_file}    IN    @{pdf_files}
         ${filename}=    Set Variable    ${INVOICES_DIR}${/}${pdf_file}
         Copy File    ${filename}    ${OUTPUT_DIR}
