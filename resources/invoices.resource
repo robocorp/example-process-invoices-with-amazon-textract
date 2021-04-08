@@ -21,28 +21,30 @@ Scan Image With AWS Textract
     [Return]    ${invoice}
 
 *** Keywords ***
-Scan PDF With AWS Textract
-    [Arguments]    ${document_name}
-    ${job_id}=    Start Document Analysis    ${S3_BUCKET_NAME}    ${document_name}
+Process PDF with Amazon Textract
+    [Arguments]    ${filename}
+    ${basename}=    Get Basename    ${filename}
+    Upload File    ${S3_BUCKET_NAME}    ${filename}    ${basename}
+    ${job_id}=    Start Document Analysis    ${S3_BUCKET_NAME}    ${basename}
     [Return]    ${job_id}
 
 *** Keywords ***
-Wait For PDF Scans To Complete
-    [Arguments]    ${jobs}
+Wait For PDF Processing Results
+    [Arguments]    ${job_ids}
     ${invoices}=    Create List
     ${responses}=    Create List
     FOR    ${i}    IN RANGE    90
-        ${len}=    Get Length    ${jobs}
-        Exit For Loop If    ${len} == 0
-        ${jobs_queue}=    Copy List    ${jobs}
+        ${jobs_length}=    Get Length    ${job_ids}
+        Exit For Loop If    ${jobs_length} == 0
+        ${jobs_queue}=    Copy List    ${job_ids}
         FOR    ${job_id}    IN    @{jobs_queue}
             ${response}=    Get Document Analysis    ${job_id}
             IF    "${response}[JobStatus]" == "SUCCEEDED"
-            Remove Values From List    ${jobs}    ${job_id}
+            Remove Values From List    ${job_ids}    ${job_id}
             Append To List    ${responses}    ${response}
             END
         END
-        Sleep    2s
+        Sleep    3s
     END
     FOR    ${response}    IN    @{responses}
         ${model}=    Convert Textract Response To Model    ${response}
@@ -57,12 +59,7 @@ Wait For PDF Scans To Complete
     [Return]    ${invoices}
 
 *** Keywords ***
-Create Invoice
-    ${filename}=    Create Random Invoice
-    [Return]    ${filename}
-
-*** Keywords ***
-Invoices to Excel
+Save Invoices To Excel
     [Arguments]    ${invoices}
     Create Workbook    ${OUTPUT_DIR}${/}invoices.xlsx
     FOR    ${invoice}    IN    @{invoices}
@@ -78,22 +75,21 @@ Invoices to Excel
     Save Workbook
 
 *** Keywords ***
+Get Invoice Files
+    [Arguments]    ${file_extension}
+    ${files}=    List Files In Directory    ${INVOICES_DIR}    *.${file_extension}
+    [Return]    ${files}
+
+*** Keywords ***
 Create Invoices
-    ${files}=    Create List
-    Create Bucket    ${S3_BUCKET_NAME}
     FOR    ${idx}    IN RANGE    1    ${NUMBER_OF_PDF_INVOICES}+1
-        ${filename}=    Set Variable    ${OUTPUT_DIR}${/}invoice_${idx}.pdf
-        ${order_number}=    Create Random Invoice    ${filename}    ${idx}
-        Append To List    ${files}    ${filename}
-        ${basename}=    Evaluate    os.path.basename("${filename}")
-        Upload File    ${S3_BUCKET_NAME}    ${filename}    ${basename}
+        ${filename}=    Set Variable    ${INVOICES_DIR}${/}invoice_${idx}.pdf
+        Create Random Invoice    ${filename}    ${idx}
     END
     FOR    ${idx}    IN RANGE    1    ${NUMBER_OF_IMG_INVOICES}+1
-        ${filename}=    Set Variable    ${OUTPUT_DIR}${/}invoice_${idx}.png
-        ${order_number}=    Create Random Image Invoice
+        ${filename}=    Set Variable    ${INVOICES_DIR}${/}invoice_${idx}.png
+        Create Random Image Invoice
         ...    ${CURDIR}${/}template_invoice.png
         ...    ${CURDIR}${/}Roboto-Black.ttf
         ...    ${filename}
-        Append To List    ${files}    ${filename}
     END
-    [Return]    ${files}

@@ -1,39 +1,38 @@
 *** Settings ***
-Documentation     Execution report
+Documentation     Processes PDF and image invoices with Amazon Textract.
+...               Saves the extracted invoice data in an Excel file.
 Resource          invoices.resource
 
 *** Tasks ***
-Scan PDF Invoices with AWS Textract
-    [Setup]    AWS Initialization
-    @{jobs}=    Create List
-    ${pdf_files}=    List Files In Directory    resources${/}invoices    *.pdf
+Process PDF invoices with Amazon Textract
+    [Setup]    Initialize Amazon Clients
+    @{job_ids}=    Create List
+    ${pdf_files}=    Get Invoice Files    pdf
     FOR    ${pdf_file}    IN    @{pdf_files}
-        ${filename}=    Set Variable    resources${/}invoices${/}${pdf_file}
-        ${basename}=    Evaluate    os.path.basename("${filename}")
+        ${filename}=    Set Variable    ${INVOICES_DIR}${/}${pdf_file}
         Copy File    ${filename}    ${OUTPUT_DIR}
-        ${job_id}=    Scan PDF With AWS Textract    ${basename}
-        Append To List    ${jobs}    ${job_id}
+        ${job_id}=    Process PDF with Amazon Textract    ${filename}
+        Append To List    ${job_ids}    ${job_id}
     END
-    ${pdf_scans}=    Wait For PDF Scans To Complete    ${jobs}
-    Invoices To Excel    ${pdf_scans}
+    ${invoices}=    Wait For PDF Processing Results    ${job_ids}
+    Save Invoices To Excel    ${invoices}
 
 *** Tasks ***
-Scan Image Invoices with AWS Textract
-    [Setup]    AWS Initialization
+Process image invoices with Amazon Textract
+    [Setup]    Initialize Amazon Clients
     @{invoices}=    Create List
-    ${png_files}=    List Files In Directory    resources${/}invoices    *.png
+    ${png_files}=    Get Invoice Files    png
     FOR    ${png_file}    IN    @{png_files}
-        ${filename}=    Set Variable    resources${/}invoices${/}${png_file}
-        ${basename}=    Evaluate    os.path.basename("${filename}")
+        ${filename}=    Set Variable    ${INVOICES_DIR}${/}${png_file}
         Copy File    ${filename}    ${OUTPUT_DIR}
         ${invoice}=    Scan Image With AWS Textract    ${filename}
         IF    ${invoice}
         Append To List    ${invoices}    ${invoice}
         END
     END
-    Invoices To Excel    ${invoices}
+    Save Invoices To Excel    ${invoices}
 
 *** Tasks ***
 Create Invoices
-    [Setup]    AWS Initialization
+    [Setup]    Initialize Amazon Clients
     Create Invoices

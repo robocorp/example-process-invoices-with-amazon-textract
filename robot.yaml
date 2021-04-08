@@ -1,8 +1,8 @@
 tasks:
-  Scan PDF Invoices with AWS Textract:
-    robotTaskName: Scan PDF Invoices with AWS Textract
-  Scan Image Invoices with AWS Textract:
-    robotTaskName: Scan Image Invoices with AWS Textract
+  Process PDF invoices with Amazon Textract:
+    robotTaskName: Process PDF invoices with Amazon Textract
+  Process image invoices with Amazon Textract:
+    robotTaskName: Process image invoices with Amazon Textract
   Create Invoices:
     robotTaskName: Create Invoices
 
