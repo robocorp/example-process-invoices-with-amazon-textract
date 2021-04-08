@@ -2,6 +2,8 @@ testrun/
 output/
 venv/
 temp/
+resources/invoices/*.pdf
+resources/invoices/*.png
 .rpa/
 .idea/
 .ipynb_checkpoints/
