@@ -25,7 +25,7 @@ Process image invoices with Amazon Textract
     FOR    ${png_file}    IN    @{png_files}
         ${filename}=    Set Variable    ${INVOICES_DIR}${/}${png_file}
         Copy File    ${filename}    ${OUTPUT_DIR}
-        ${invoice}=    Scan Image With AWS Textract    ${filename}
+        ${invoice}=    Process Image With AWS Textract    ${filename}
         IF    ${invoice}
         Append To List    ${invoices}    ${invoice}
         END

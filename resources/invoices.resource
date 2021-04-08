@@ -7,7 +7,7 @@ ${NUMBER_OF_IMG_INVOICES}    %{NUMBER_OF_IMG_INVOICES=10}
 ${NUMBER_OF_PDF_INVOICES}    %{NUMBER_OF_PDF_INVOICES=10}
 
 *** Keywords ***
-Scan Image With AWS Textract
+Process Image With AWS Textract
     [Arguments]    ${document_filepath}
     ${response}=    Analyze Document    ${document_filepath}
     ${model}=    Convert Textract Response To Model    ${response}
