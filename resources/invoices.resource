@@ -21,8 +21,7 @@ Process Image With AWS Textract
 
 *** Keywords ***
 Process PDF with Amazon Textract
-    [Arguments]    ${filename}
-    ${basename}=    Get Basename    ${filename}
+    [Arguments]    ${basename}
     ${job_id}=    Start Document Analysis    ${S3_BUCKET_NAME}    ${basename}
     [Return]    ${job_id}
 
@@ -101,7 +100,22 @@ Create Image Invoice
 *** Keywords ***
 Create Invoices
     ${bucket_created}=    Create Bucket    ${S3_BUCKET_NAME}
+    Delete Files From Amazon S3 Bucket
     FOR    ${index}    IN RANGE    1    ${NUMBER_OF_INVOICES}+1
         Create PDF Invoice    ${index}
         Create Image Invoice    ${index}
     END
+
+*** Keywords ***
+Delete Files From Amazon S3 Bucket
+    ${keys}=    Get File Keys From Amazon S3 Bucket
+    ${deleted}=    Delete Files    ${S3_BUCKET_NAME}    ${keys}
+
+*** Keywords ***
+Get File Keys From Amazon S3 Bucket
+    ${files}=    List Files    ${S3_BUCKET_NAME}
+    @{keys}=    Create List
+    FOR    ${file}    IN    @{files}
+        Append To List    ${keys}    ${file}[Key]
+    END
+    [Return]    ${keys}

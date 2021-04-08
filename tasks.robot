@@ -7,11 +7,9 @@ Resource          invoices.resource
 Process PDF invoices with Amazon Textract
     [Setup]    Initialize Amazon Clients
     @{job_ids}=    Create List
-    ${pdf_files}=    Get Invoice Files    pdf
+    ${pdf_files}=    Get File Keys From Amazon S3 Bucket
     FOR    ${pdf_file}    IN    @{pdf_files}
-        ${filename}=    Set Variable    ${INVOICES_DIR}${/}${pdf_file}
-        Copy File    ${filename}    ${OUTPUT_DIR}
-        ${job_id}=    Process PDF with Amazon Textract    ${filename}
+        ${job_id}=    Process PDF with Amazon Textract    ${pdf_file}
         Append To List    ${job_ids}    ${job_id}
     END
     ${invoices}=    Wait For PDF Processing Results    ${job_ids}
