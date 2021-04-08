@@ -34,4 +34,5 @@ Process image invoices with Amazon Textract
 
 *** Tasks ***
 Create Invoices
+    [Setup]    Initialize Amazon Clients
     Create Invoices
