@@ -23,10 +23,6 @@ Process Image With AWS Textract
 Process PDF with Amazon Textract
     [Arguments]    ${filename}
     ${basename}=    Get Basename    ${filename}
-    ${upload_status}=    Upload File
-    ...    ${S3_BUCKET_NAME}
-    ...    ${filename}
-    ...    ${basename}
     ${job_id}=    Start Document Analysis    ${S3_BUCKET_NAME}    ${basename}
     [Return]    ${job_id}
 
@@ -83,13 +79,29 @@ Get Invoice Files
     [Return]    ${files}
 
 *** Keywords ***
+Create PDF Invoice
+    [Arguments]    ${index}
+    ${pdf_invoice}=    Set Variable    ${INVOICES_DIR}${/}invoice_${index}.pdf
+    ${basename}=    Get Basename    ${pdf_invoice}
+    Create Random Invoice    ${pdf_invoice}    ${index}
+    ${upload_status}=    Upload File
+    ...    ${S3_BUCKET_NAME}
+    ...    ${pdf_invoice}
+    ...    ${basename}
+
+*** Keywords ***
+Create Image Invoice
+    [Arguments]    ${index}
+    ${image_invoice}=    Set Variable    ${INVOICES_DIR}${/}invoice_${index}.png
+    Create Random Image Invoice
+    ...    ${CURDIR}${/}template_invoice.png
+    ...    ${CURDIR}${/}Roboto-Black.ttf
+    ...    ${image_invoice}
+
+*** Keywords ***
 Create Invoices
-    FOR    ${idx}    IN RANGE    1    ${NUMBER_OF_INVOICES}+1
-        ${pdf_invoice}=    Set Variable    ${INVOICES_DIR}${/}invoice_${idx}.pdf
-        Create Random Invoice    ${pdf_invoice}    ${idx}
-        ${image_invoice}=    Set Variable    ${INVOICES_DIR}${/}invoice_${idx}.png
-        Create Random Image Invoice
-        ...    ${CURDIR}${/}template_invoice.png
-        ...    ${CURDIR}${/}Roboto-Black.ttf
-        ...    ${image_invoice}
+    ${bucket_created}=    Create Bucket    ${S3_BUCKET_NAME}
+    FOR    ${index}    IN RANGE    1    ${NUMBER_OF_INVOICES}+1
+        Create PDF Invoice    ${index}
+        Create Image Invoice    ${index}
     END
