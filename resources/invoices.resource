@@ -6,20 +6,6 @@ ${S3_BUCKET_NAME}    example-amazon-textract-pdf-invoice-bucket
 ${NUMBER_OF_INVOICES}    %{NUMBER_OF_INVOICES=10}
 
 *** Keywords ***
-Process Image With AWS Textract
-    [Arguments]    ${document_filepath}
-    ${response}=    Analyze Document    ${document_filepath}
-    ${model}=    Convert Textract Response To Model    ${response}
-    ${invoice}=    Set Variable    ${NONE}
-    FOR    ${page}    IN    @{model.pages}
-        IF    ${page.form.fields}
-        ${invoice}=    Create AWS Invoice    ${page.form.fields}
-        END
-    END
-    Log Many    ${response}
-    [Return]    ${invoice}
-
-*** Keywords ***
 Process PDF with Amazon Textract
     [Arguments]    ${basename}
     ${job_id}=    Start Document Analysis    ${S3_BUCKET_NAME}    ${basename}
@@ -72,44 +58,22 @@ Save Invoices To Excel
     Save Workbook
 
 *** Keywords ***
-Get Invoice Files
-    [Arguments]    ${file_extension}
-    ${files}=    List Files In Directory    ${INVOICES_DIR}    *.${file_extension}
-    [Return]    ${files}
-
-*** Keywords ***
 Create PDF Invoice
     [Arguments]    ${index}
-    ${pdf_invoice}=    Set Variable    ${INVOICES_DIR}${/}invoice_${index}.pdf
-    ${basename}=    Get Basename    ${pdf_invoice}
-    Create Random Invoice    ${pdf_invoice}    ${index}
+    ${filename}=    Set Variable    invoice_${index}.pdf
+    ${file_path}=    Set Variable    ${OUTPUT_DIR}${/}${filename}
+    Create Random Invoice    ${file_path}    ${index}
     ${upload_status}=    Upload File
     ...    ${S3_BUCKET_NAME}
-    ...    ${pdf_invoice}
-    ...    ${basename}
-
-*** Keywords ***
-Create Image Invoice
-    [Arguments]    ${index}
-    ${image_invoice}=    Set Variable    ${INVOICES_DIR}${/}invoice_${index}.png
-    Create Random Image Invoice
-    ...    ${CURDIR}${/}template_invoice.png
-    ...    ${CURDIR}${/}Roboto-Black.ttf
-    ...    ${image_invoice}
+    ...    ${file_path}
+    ...    ${filename}
 
 *** Keywords ***
 Create Invoices
     ${bucket_created}=    Create Bucket    ${S3_BUCKET_NAME}
-    Delete Files From Amazon S3 Bucket
     FOR    ${index}    IN RANGE    1    ${NUMBER_OF_INVOICES}+1
         Create PDF Invoice    ${index}
-        Create Image Invoice    ${index}
     END
-
-*** Keywords ***
-Delete Files From Amazon S3 Bucket
-    ${keys}=    Get File Keys From Amazon S3 Bucket
-    ${deleted}=    Delete Files    ${S3_BUCKET_NAME}    ${keys}
 
 *** Keywords ***
 Get File Keys From Amazon S3 Bucket
@@ -119,3 +83,8 @@ Get File Keys From Amazon S3 Bucket
         Append To List    ${keys}    ${file}[Key]
     END
     [Return]    ${keys}
+
+*** Keywords ***
+Delete Files From Amazon S3 Bucket
+    ${keys}=    Get File Keys From Amazon S3 Bucket
+    ${deleted}=    Delete Files    ${S3_BUCKET_NAME}    ${keys}
