@@ -1,5 +1,7 @@
 # Process PDF invoices with Amazon Textract
 
+<img src="images/pdf-textract-excel.png" style="margin-bottom:20px">
+
 This robot processes randomly generated [PDF](https://en.wikipedia.org/wiki/PDF) invoices with [Amazon Textract](https://aws.amazon.com/textract/) and saves the extracted invoice data in an [Excel](https://en.wikipedia.org/wiki/Microsoft_Excel) file.
 
 ## Tasks
