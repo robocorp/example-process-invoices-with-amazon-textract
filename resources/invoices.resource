@@ -7,8 +7,8 @@ ${NUMBER_OF_INVOICES}    %{NUMBER_OF_INVOICES=10}
 
 *** Keywords ***
 Process PDF with Amazon Textract
-    [Arguments]    ${basename}
-    ${job_id}=    Start Document Analysis    ${S3_BUCKET_NAME}    ${basename}
+    [Arguments]    ${filename}
+    ${job_id}=    Start Document Analysis    ${S3_BUCKET_NAME}    ${filename}
     [Return]    ${job_id}
 
 *** Keywords ***
