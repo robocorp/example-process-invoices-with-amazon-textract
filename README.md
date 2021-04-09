@@ -2,7 +2,17 @@
 
 <img src="images/pdf-textract-excel.png" style="margin-bottom:20px">
 
-This robot processes randomly generated [PDF](https://en.wikipedia.org/wiki/PDF) invoices with [Amazon Textract](https://aws.amazon.com/textract/) and saves the extracted invoice data in an [Excel](https://en.wikipedia.org/wiki/Microsoft_Excel) file.
+It is possible to automatically read and extract invoice data from [PDF](https://en.wikipedia.org/wiki/PDF) documents and save the data to an [Excel](https://en.wikipedia.org/wiki/Microsoft_Excel) file. No more manual copy & pasting!
+
+This robot processes randomly generated PDF invoices with [Amazon Textract](https://aws.amazon.com/textract/) and saves the extracted invoice data in an Excel file.
+
+## Example PDF invoice
+
+<img src="images/example-pdf-invoice.png" style="margin-bottom:20px">
+
+## Example Excel
+
+<img src="images/example-excel.png" style="margin-bottom:20px">
 
 ## Tasks
 
