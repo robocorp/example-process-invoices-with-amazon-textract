@@ -17,7 +17,7 @@ class InvoiceModeler:
         invoice = self.get_new_invoice()
         for field in fields:
             key = field.key.text.lower()
-            val = field.value.text
+            val = field.value.text if field.value else ""
 
             if "invoice number" in key:
                 invoice["invoice_number"] = val
