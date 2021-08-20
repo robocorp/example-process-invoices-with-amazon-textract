@@ -56,7 +56,7 @@ The robot requires access to Amazon S3 and Amazon Textract services. It needs an
 
 ### Store the API key, key ID, and the AWS region in Robocorp Vault
 
-Set up [Robocorp Vault](https://robocorp.com/docs/development-guide/variables-and-secrets/vault) either locally or in [Control Room](https://robocorp.com/docs/robocorp-cloud/overview).
+Set up [Robocorp Vault](https://robocorp.com/docs/development-guide/variables-and-secrets/vault) either locally or in [Control Room](https://robocorp.com/docs/control-room).
 
 For a local run, use the following configuration:
 
@@ -86,7 +86,7 @@ For Control Room run, create a new vault entry in Control Room.
 - Enter `aws` as the name.
 - Provide values for the `AWS_KEY`, `AWS_KEY_ID`, and `AWS_REGION` keys:
 
-<img src="images/robocorp-cloud-vault.png" style="margin-bottom:20px">
+<img src="images/control-room-vault.png" style="margin-bottom:20px">
 
 ## Running
 
@@ -98,7 +98,7 @@ Optional: Run the `Delete Files From Amazon S3 Bucket` task if you want to delet
 
 When running in Control Room, add the `Create Invoices` and `Process PDF invoices with Amazon Textract` as process steps:
 
-<img src="images/robocorp-cloud-process-steps.png" style="margin-bottom:20px">
+<img src="images/control-room-process-steps.png" style="margin-bottom:20px">
 
 ## Further reading
 
