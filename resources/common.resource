@@ -2,7 +2,7 @@
 Library           Collections
 Library           RPA.Cloud.AWS
 Library           RPA.Excel.Files
-Library           RPA.Robocloud.Secrets
+Library           RPA.Robocorp.Vault
 Library           InvoiceGenerator
 Library           InvoiceModeler
 

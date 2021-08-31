@@ -76,7 +76,7 @@ For a local run, use the following configuration:
 
 ```json
 {
-  "RPA_SECRET_MANAGER": "RPA.Robocloud.Secrets.FileSecrets",
+  "RPA_SECRET_MANAGER": "RPA.Robocorp.Vault.FileSecrets",
   "RPA_SECRET_FILE": "/Users/username/vault.json"
 }
 ```
