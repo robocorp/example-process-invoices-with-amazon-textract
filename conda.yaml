@@ -3,7 +3,7 @@ channels:
 
 dependencies:
   - python=3.7.5
-  - faker=6.6.3
+  - faker=11.3.0
   - pip=20.1
   - pip:
-      - rpaframework[aws]==12.5.1 # https://rpaframework.org/releasenotes.html
+      - rpaframework[aws]==12.6.0 # https://rpaframework.org/releasenotes.html
