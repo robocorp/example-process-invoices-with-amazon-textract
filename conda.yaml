@@ -6,4 +6,4 @@ dependencies:
   - faker=13.3.3
   - pip=20.1
   - pip:
-      - rpaframework[aws]==13.0.0 # https://rpaframework.org/releasenotes.html
+      - rpaframework[aws]==13.0.3 # https://rpaframework.org/releasenotes.html
