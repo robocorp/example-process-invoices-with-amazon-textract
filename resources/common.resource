@@ -1,10 +1,11 @@
 *** Settings ***
-Library           Collections
-Library           RPA.Cloud.AWS
-Library           RPA.Excel.Files
-Library           RPA.Robocorp.Vault
-Library           InvoiceGenerator
-Library           InvoiceModeler
+Library     Collections
+Library     RPA.Cloud.AWS
+Library     RPA.Excel.Files
+Library     RPA.Robocorp.Vault
+Library     InvoiceGenerator
+Library     InvoiceModeler
+
 
 *** Keywords ***
 Initialize Amazon Clients
