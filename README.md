@@ -1,7 +1,5 @@
 # Process PDF invoices with Amazon Textract
 
-<img src="images/pdf-textract-excel.png" style="margin-bottom:20px">
-
 [PDF](https://en.wikipedia.org/wiki/PDF) - The most machine-readable document format ever! Right? 🙈
 
 > Extracting text from PDF files is not a simple operation. PDF was never meant to be a format to _read data from_: its purpose is to provide an accurate way of reproducing documents and make them portable to any system. - [How to read PDF files with RPA Framework](https://robocorp.com/docs/development-guide/pdf/how-to-read-pdf-files)!
